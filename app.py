@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
-
 # --- Flask App ---
 app = Flask(__name__, template_folder="templates")
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -101,7 +100,11 @@ def logout():
     return redirect(url_for("login"))
 
 # --- Run Server ---
+import os
+
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()  # create tables if they don't exist
-    app.run(debug=False)
+        db.create_all()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+    
